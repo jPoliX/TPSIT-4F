@@ -8,7 +8,7 @@ int main()
     int N;
     do
     {
-        printf("Inserisci N positivo: ", N);
+        printf("Inserisci N positivo: ");
         scanf("%d", &N);
     } while (N < 0);
 
