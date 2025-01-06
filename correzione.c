@@ -7,33 +7,28 @@ int main(int argc, char *argv[])
 {
     if (argc != 2)
     {
-        fprintf(stderr, "Numero argomenti sbagliato\n");
+        printf("Numero argomenti sbagliato\n");
+        exit(1);
+    }
+    int fd, nread;
+    char buff[8];
+    fd = open(argv[1], O_RDONLY);
+    if (fd < 0) 
+    {
+        perror("Errore nell'apertura del file");
         exit(1);
     }
 
-    int fd;   
-    ssize_t nread;
-    char buff;
-    fd = open(argv[1], O_RDONLY);
-    if (fd == -1)
+    while ((nread = read(fd, buff, sizeof(buff))) > 0)
     {
-        perror("Errore nell'apertura del file");
-        exit(2);
-    }
-    while ((nread = read(fd, &buff, sizeof(buff))) > 0)
-    {
-        if (write(STDOUT_FILENO, &buff, nread) == -1)
-        {
-            perror("Errore nella scrittura");
-            close(fd);
-            exit(3);
-        }
+        write(1, buff, nread);
     }
 
-    if (nread == -1)
+    if (nread < 0)
     {
-        perror("Errore nella lettura");
+        printf("Errore nella lettura del file");
     }
+
     close(fd);
 
     return 0;
